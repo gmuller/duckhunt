@@ -9,6 +9,11 @@ var app = express();
 app.use(express.static(__dirname));
 app.use(express.bodyParser());
 
+app.get('/', function(req, res) {
+	res.statusCode = 200;
+    	res.send("OK\n");
+});
+
 app.post('/renderPDF', function(req, res) {
 	console.log(req.body);
 	var url = req.body.url;
