@@ -24,12 +24,16 @@ app.post('/renderPDF', function(req, res) {
 	var options = {
 		paperSize: { format: 'A4', orientation: 'portrait', border: '1cm' },
 		takeShotOnCallback: true,
+		//phantomPath: '/usr/bin/phantomjs',
+		phantomConfig: {
+			'web-security': 'false'
+		},
 		timeout: timeout
 	};
 
 	var tempName = temp.path({suffix: '.pdf'});
     webshot(url, tempName, options, function(err) {
-    	console.log(err);
+    	console.log("There was a an Error: " + err);
     	res.writeHead( 200, {"Content-Type": 'application/pdf'});
     	var readStream = fs.createReadStream(tempName);
     	readStream.pipe(res);
@@ -46,6 +50,7 @@ app.post('/renderPDF', function(req, res) {
     	})
     });
 });
-
-app.listen(3002);
-console.log('Listening on port 3002');
+var port = process.argv[2];
+console.log(port);
+app.listen(port);
+console.log('Listening on port ' + port);
